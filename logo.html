@@ -1,0 +1,572 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NetSeekerZ - Digital Store</title>
+  <meta name="description" content="NetSeekerZ Digital Store - Free Tools, Premium Courses, and More!"/>
+  <meta name="keywords" content="digital store, free tools, courses, YouTube, ChatGPT, hacking, cybersecurity"/>
+  <meta name="author" content="NetSeekerZ"/>
+  <style>
+    :root {
+      --bg-dark: #0d1117;
+      --glass-bg: rgba(22, 27, 34, 0.45);
+      --glass-blur: blur(16px);
+      --text-light: #e6edf3;
+      --accent-blue: #1f6feb;
+      --accent-blue-light: #58a6ff;
+      --accent-pink: #ec38bc;
+      --card-radius: 20px;
+      --glow: 0 0 24px 4px #1f6feb44, 0 2px 32px #58a6ff22;
+      --transition: 0.43s cubic-bezier(.85,.06,.25,1);
+      --skeleton: #c3c8d1;
+    }
+    html[data-theme="dark"] {
+      --bg-dark: #0d1117;
+      --glass-bg: rgba(22, 27, 34, 0.65);
+      --text-light: #e6edf3;
+      --skeleton: #26334b;
+    }
+    html[data-theme="light"] {
+      --bg-dark: #eef2fa;
+      --glass-bg: rgba(255,255,255,0.70);
+      --text-light: #223;
+      --skeleton: #e0e0e0;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+      background: linear-gradient(120deg, #232526 0%, #414345 100%);
+      background-attachment: fixed;
+      color: var(--text-light);
+      box-sizing: border-box;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /* Dark/Light Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 22px; right: 22px;
+      z-index: 99;
+      background: #fff9;
+      border-radius: 50%;
+      width: 58px; height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 14px #0002;
+      border: 2px solid #fff2;
+      cursor: pointer;
+      font-size: 2em;
+      color: #1f6feb;
+      outline: none;
+      user-select: none;
+      transition: box-shadow 0.22s, background 0.22s;
+    }
+    .theme-toggle:hover {
+      background: #1f6febbb;
+      color: #fff;
+      box-shadow: 0 6px 32px #1f6feb22;
+    }
+
+    /* Logo Circle with image fill */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 130px;
+      height: 130px;
+      background: linear-gradient(135deg, #1f6feb88 10%, #ec38bc88 90%);
+      border-radius: 50%;
+      margin: 0 auto;
+      margin-top: 36px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 60px #1f6feb55, 0 0 18px #ff7edb55;
+      border: 6px solid #fff1;
+      overflow: hidden;
+      animation: logoGlow 2.8s infinite alternate;
+      position: relative;
+    }
+    @keyframes logoGlow {
+      0% { box-shadow: 0 0 30px #1f6feb88, 0 0 14px #ff7edb55; }
+      100% { box-shadow: 0 0 80px #ec38bcbb, 0 0 40px #1f6febbb; }
+    }
+    .logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: transform 0.4s cubic-bezier(.53,.01,.28,1.2);
+      filter: drop-shadow(0 0 12px #1f6febcc);
+    }
+    .logo-container:hover .logo {
+      transform: scale(1.12) rotate(-8deg);
+      filter: drop-shadow(0 0 24px #58a6ffcc);
+    }
+
+    header {
+      background: transparent;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 28px;
+    }
+    header h1 {
+      font-size: 2.2em;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--accent-blue) 40%, var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 6px #1f6feb44);
+      font-weight: bold;
+      margin-top: 0;
+    }
+    header p {
+      font-size: 1.11em;
+      color: #e6edf3d7;
+      margin: 0;
+      opacity: 0.92;
+    }
+
+    /* Loader */
+    #loader {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 32px 0 10px 0;
+    }
+    .skeleton {
+      background: var(--skeleton);
+      border-radius: 14px;
+      min-height: 180px;
+      width: 320px;
+      margin: 8px 0;
+      animation: skeletonBlink 1.3s infinite alternate;
+    }
+    @keyframes skeletonBlink {
+      from { opacity: 0.5;}
+      to { opacity: 1;}
+    }
+
+    /* Accordion - glassmorphism */
+    .accordion {
+      background: var(--glass-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--glow), 0 2px 32px #0002;
+      margin-bottom: 30px;
+      overflow: hidden;
+      backdrop-filter: var(--glass-blur);
+      border: 1.5px solid #222b3a77;
+      transition: box-shadow var(--transition), border var(--transition);
+      position: relative;
+    }
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 26px 25px 22px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 1.23em;
+      color: var(--accent-blue-light);
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      user-select: none;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(2px);
+    }
+    .accordion-header .arrow {
+      transition: transform 0.4s cubic-bezier(.53,.01,.28,1.2);
+      font-size: 1.26em;
+      color: var(--accent-pink);
+      filter: drop-shadow(0 1px 8px #ff7edb33);
+    }
+    .accordion-header.active .arrow {
+      transform: rotate(90deg) scale(1.15);
+      color: var(--accent-blue-light);
+    }
+    .accordion-header.active, .accordion-header:hover {
+      background: linear-gradient(90deg, #161b22cc 85%, #1f6feb44 100%);
+      color: var(--accent-pink);
+      filter: brightness(1.05);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      background: none;
+      padding: 0 27px;
+      transition:
+        max-height 0.55s cubic-bezier(.83,.12,.31,1.11),
+        opacity 0.45s cubic-bezier(.73,.01,.28,1.2),
+        padding 0.35s cubic-bezier(.83,.12,.31,1.11);
+      will-change: max-height, opacity, padding;
+      box-sizing: border-box;
+    }
+    .accordion-content.active {
+      padding: 0 27px 23px 27px;
+      opacity: 1;
+      max-height: 800px;
+      animation: fadeSlideDown 0.7s;
+    }
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-32px);}
+      to { opacity: 1; transform: none;}
+    }
+
+    /* Product Card (glassmorphism + pop effect) */
+    .product-card {
+      background: linear-gradient(120deg, #232526bb 50%, #434343bb 100%);
+      border-radius: 13px;
+      box-shadow: 0 4px 30px #1f6feb33, 0 2px 18px #0003;
+      margin: 18px 0 0 0;
+      padding: 27px 28px 19px 28px;
+      position: relative;
+      border: 1.2px solid #1f6feb22;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      transition:
+        transform 0.22s cubic-bezier(.85,.06,.25,1),
+        box-shadow 0.24s cubic-bezier(.85,.06,.25,1);
+      animation: fadeIn 1.1s;
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 10px; right: 10px; bottom: 10px;
+      border-radius: 13px;
+      background: linear-gradient(120deg, #1f6feb33 10%, #ec38bc33 90%);
+      z-index: 0;
+      filter: blur(18px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .product-card:hover {
+      transform: translateY(-6px) scale(1.025) rotate(-0.7deg);
+      box-shadow: 0 2px 60px #58a6ff44, 0 2px 32px #ec38bc22;
+      border-color: #58a6ff80;
+      filter: brightness(1.08);
+      z-index: 2;
+    }
+    .product-card h3 {
+      margin: 0 0 11px 0;
+      color: var(--accent-blue-light);
+      font-size: 1.19em;
+      letter-spacing: 1px;
+      z-index: 2;
+      position: relative;
+      filter: drop-shadow(0 2px 6px #1f6feb22);
+    }
+    .product-card p {
+      color: #c9d1d9;
+      font-size: 1.09em;
+      margin: 0 0 13px 0;
+      font-weight: 400;
+      line-height: 1.6;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* === ANIMATED GRADIENT BUTTON (Always Animated) === */
+    .download-btn, .join-btn {
+      background: linear-gradient(270deg, var(--accent-blue), var(--accent-pink), var(--accent-blue), #00e0d3);
+      background-size: 400% 400%;
+      color: #fff;
+      padding: 13px 30px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.13em;
+      margin-top: 11px;
+      box-shadow: 0 3px 16px #1f6feb44, 0 2px 16px #ec38bc44;
+      border: none;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      letter-spacing: 0.4px;
+      animation: gradientMove 2.6s linear infinite;
+      cursor: pointer;
+      transition:
+        background 0.31s, color 0.31s,
+        box-shadow 0.31s, transform 0.19s;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      100% {background-position: 100% 50%;}
+    }
+    .download-btn:hover, .join-btn:hover {
+      color: #fff;
+      transform: translateY(-3px) scale(1.045);
+      filter: brightness(1.04);
+      box-shadow: 0 6px 36px #1f6feb88, 0 4px 32px #ec38bc88;
+    }
+    .accordion-content.active .download-btn {
+      position: relative;
+      z-index: 1;
+    }
+    .accordion-content.active .download-btn::after {
+      content: '';
+      position: absolute;
+      left: -60%;
+      top: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg, #fff8 20%, transparent 80%);
+      transform: skewX(-22deg);
+      animation: shineMove 1.7s linear infinite;
+      z-index: 3;
+      pointer-events: none;
+      border-radius: 8px;
+      opacity: 0.75;
+    }
+    @keyframes shineMove {
+      0% { left: -60%;}
+      100% { left: 120%;}
+    }
+    .download-btn:focus, .join-btn:focus {
+      outline: 2px solid #58a6ff;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 3px #1f6feb55;
+    }
+
+    /* Join section */
+    .join-section {
+      text-align: center;
+      margin-top: 36px;
+      background: var(--glass-bg);
+      border-radius: 18px;
+      box-shadow: 0 2px 60px #1f6feb33, 0 2px 18px #ec38bc33;
+      padding: 36px 12px 30px 12px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeInUp 1.9s;
+      backdrop-filter: blur(14px);
+      border: 1.4px solid #1f6feb22;
+      filter: brightness(1.05);
+    }
+    .join-section h2 {
+      background: linear-gradient(90deg, var(--accent-blue-light) 40%, var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.5em;
+      margin-bottom: 7px;
+      margin-top: 0;
+      letter-spacing: 1px;
+      filter: drop-shadow(0 2px 8px #1f6feb33);
+    }
+    .join-section p {
+      color: #c9d1d9;
+      font-size: 1.12em;
+      margin-bottom: 19px;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      section {
+        max-width: 99vw;
+        padding: 30px 0 6px 0;
+      }
+      .join-section {
+        padding: 22px 4vw 18px 4vw;
+      }
+      .logo-container {
+        width: 90px; height: 90px;
+      }
+      .logo {
+        width: 90px; height: 90px;
+      }
+    }
+    @media (max-width: 600px) {
+      .logo-container {
+        width: 65px; height: 65px; margin-top: 16px; margin-bottom: 13px;
+      }
+      .logo {
+        width: 65px; height: 65px;
+      }
+      header h1 {
+        font-size: 1.25em;
+      }
+    }
+    footer {
+      text-align: center;
+      padding: 25px 8px 15px 8px;
+      background: transparent;
+      font-size: 0.98em;
+      margin-top: 44px;
+      color: #b1bac4;
+      letter-spacing: 0.4px;
+      opacity: 0.82;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Dark/Light Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
+    <span id="theme-ico">🌙</span>
+  </button>
+  <header>
+    <div class="logo-container">
+      <img src="NetseekerZ.png" alt="NetSeekerZ Logo" class="logo" />
+    </div>
+    <h1>NetSeekerZ Digital Store</h1>
+    <p>Free Tools, Premium Courses, &amp; More!<br><span style="font-size:0.75em;opacity:0.7;">Glassy, Animated, Ultra Smooth</span></p>
+  </header>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+  </div>
+
+  <section id="main-content" style="display:none;">
+    <div class="accordion" id="acc-youtube">
+      <button class="accordion-header" onclick="openAccordion(this)">
+        <span>YouTube Courses</span>
+        <span class="arrow">&#9654;</span>
+      </button>
+      <div class="accordion-content">
+        <div class="product-card">
+          <h3>YouTube Copyright Complete Course</h3>
+          <p>Worth Rs. 20,000 — Now <b>FREE</b>. Learn the legal way to handle YouTube content with this beginner-friendly course.</p>
+          <a class="download-btn" href="https://drive.google.com/file/d/10JLWN9HRIJDpD65cssIiEmsNyMdLhdQA/view?usp=drivesdk" target="_blank">Download</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" id="acc-chatgpt">
+      <button class="accordion-header" onclick="openAccordion(this)">
+        <span>ChatGPT Tools</span>
+        <span class="arrow">&#9654;</span>
+      </button>
+      <div class="accordion-content">
+        <div class="product-card">
+          <h3>Free GPT Websites</h3>
+          <p>Access free ChatGPT alternatives like chat.theb.ai, fastgpt.app, and more. No login required!</p>
+          <a class="download-btn" href="https://chat.theb.ai" target="_blank">Try Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" id="acc-hacking">
+      <button class="accordion-header" onclick="openAccordion(this)">
+        <span>Hacking &amp; Cybersecurity Courses</span>
+        <span class="arrow">&#9654;</span>
+      </button>
+      <div class="accordion-content">
+        <div class="product-card">
+          <h3>3D Animation &amp; Ethical Hacking</h3>
+          <p>Beginner-friendly course covering basics to advanced concepts including penetration testing, Linux tools, and more.</p>
+          <a class="download-btn" href="https://drive.google.com/drive/folders/1jz7WXrYzdnrpStdQqsuh0JYOdWHo_YiX" target="_blank">Access Course</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" id="acc-tools">
+      <button class="accordion-header" onclick="openAccordion(this)">
+        <span>Tools</span>
+        <span class="arrow">&#9654;</span>
+      </button>
+      <div class="accordion-content">
+        <div class="product-card">
+          <h3>Make Unlimited App Clones</h3>
+          <p>Create unlimited clones of any app for free with <b>Multi Space app</b>.</p>
+          <a class="download-btn" href="https://play.google.com/store/apps/details?id=com.dualspacepro.multispace" target="_blank">Get App</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" id="acc-premium">
+      <button class="accordion-header" onclick="openAccordion(this)">
+        <span>Premium Accounts</span>
+        <span class="arrow">&#9654;</span>
+      </button>
+      <div class="accordion-content">
+        <div class="product-card">
+          <h3>Netflix Shared Deals</h3>
+          <p>Netflix - Rs. 459</p>
+          <a class="download-btn" href="https://wa.me/923409613867" target="_blank">Buy Now</a>
+        </div>
+        <div class="product-card">
+          <h3>Amazon Prime Shared Deals</h3>
+          <p>Amazon Prime - Rs. 150</p>
+          <a class="download-btn" href="https://wa.me/923409613867" target="_blank">Buy Now</a>
+        </div>
+        <div class="product-card">
+          <h3>Crunchyroll Shared Deals</h3>
+          <p>Crunchyroll - Rs. 350</p>
+          <a class="download-btn" href="https://wa.me/923409613867" target="_blank">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="join-section" id="join-section" style="display:none;">
+    <h2>Join Our WhatsApp Group</h2>
+    <p>Get updates, new courses, and premium tools in <strong>NetSeekerZ</strong> group.</p>
+    <a href="https://wa.me/923409613867" class="join-btn">Join Now</a>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 NetSeekerZ. All Rights Reserved. | Designed with ❤️ and Glassmorphism</p>
+  </footer>
+
+  <script>
+    // Loader simulation: hide loader and show content after 2 sec
+    setTimeout(function() {
+      document.getElementById('loader').style.display = "none";
+      document.getElementById('main-content').style.display = "block";
+      document.getElementById('join-section').style.display = "block";
+    }, 2000);
+
+    // Accordion
+    function openAccordion(clickedHeader) {
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        if (header !== clickedHeader) {
+          header.classList.remove('active');
+          header.parentElement.querySelector('.accordion-content').classList.remove('active');
+        }
+      });
+      clickedHeader.classList.toggle('active');
+      const content = clickedHeader.parentElement.querySelector('.accordion-content');
+      content.classList.toggle('active');
+    }
+    // Open first section by default
+    document.addEventListener('DOMContentLoaded', () => {
+      const firstHeader = document.querySelector('.accordion-header');
+      if (firstHeader) openAccordion(firstHeader);
+    });
+
+    // Dark/Light Mode Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const ico = document.getElementById('theme-ico');
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        ico.textContent = "🌙";
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        ico.textContent = "☀️";
+      }
+    }
+    // Default: dark mode ON
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-ico').textContent = "☀️";
+  </script>
+</body>
+</html>
